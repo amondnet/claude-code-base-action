@@ -90,6 +90,16 @@ inputs:
     required: false
     default: "false"
 
+  pipe_path:
+    description: "Path to the pipe file for Claude Code execution (optional, used for custom setups)"
+    required: false
+    default: "/tmp/claude_prompt_pipe"
+  execution_file:
+    description: "Path to the JSON file where Claude Code execution log will be saved"
+    required: false
+    default: "/tmp/claude-execution-output.json"
+
+
 outputs:
   conclusion:
     description: "Execution status of Claude Code ('success' or 'failure')"
@@ -146,6 +156,8 @@ runs:
         INPUT_APPEND_SYSTEM_PROMPT: ${{ inputs.append_system_prompt }}
         INPUT_TIMEOUT_MINUTES: ${{ inputs.timeout_minutes }}
         INPUT_CLAUDE_ENV: ${{ inputs.claude_env }}
+        INPUT_PIPE_PATH: ${{ inputs.pipe_path }}
+        INPUT_EXECUTION_FILE: ${{ inputs.execution_file }}
 
         # Provider configuration
         ANTHROPIC_API_KEY: ${{ inputs.anthropic_api_key }}
