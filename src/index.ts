@@ -17,6 +17,7 @@ async function run() {
         accessToken: process.env.CLAUDE_ACCESS_TOKEN!,
         refreshToken: process.env.CLAUDE_REFRESH_TOKEN!,
         expiresAt: process.env.CLAUDE_EXPIRES_AT!,
+        secretsAdminPat: process.env.SECRETS_ADMIN_PAT,
       });
     }
 
