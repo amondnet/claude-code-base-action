@@ -2,9 +2,11 @@
 
 > **🎉 Use Your Claude Max Subscription in GitHub Actions!**
 >
-> This is a fork of [anthropics/claude-code-base-action](https://github.com/anthropics/claude-code-base-action) that adds OAuth authentication support, enabling you to use your **Claude Max subscription** with GitHub Actions workflows.
+> This is a fork of [anthropics/claude-code-base-action](https://github.com/anthropics/claude-code-base-action) that adds OAuth authentication support, enabling you to use your **Claude Pro/Max subscription** with GitHub Actions workflows.
 >
-> **Key Feature:** Authenticate with your Claude Max subscription credentials instead of requiring API keys, making it accessible to all Claude Max subscribers.
+> **Key Feature:** Authenticate with your Claude Pro/Max subscription credentials instead of requiring API keys, making it accessible to all Claude Max subscribers.
+
+We support token refresh via a Personal Access Token with secret write access on the repo. See [Oauth Authentication Setup](https://github.com/grll/claude-code-base-action?tab=readme-ov-file#oauth-authentication-setup).
 
 This GitHub Action allows you to run [Claude Code](https://www.anthropic.com/claude-code) within your GitHub Actions workflows. You can use this to build any custom workflow on top of Claude Code.
 
@@ -25,6 +27,7 @@ Add the following to your workflow file:
     claude_access_token: ${{ secrets.CLAUDE_ACCESS_TOKEN }}
     claude_refresh_token: ${{ secrets.CLAUDE_REFRESH_TOKEN }}
     claude_expires_at: ${{ secrets.CLAUDE_EXPIRES_AT }}
+    secrets_admin_pat: ${{ secrets.SECRETS_ADMIN_PAT}}
 
 # Or using a prompt from a file
 - name: Run Claude Code with prompt file
@@ -36,6 +39,7 @@ Add the following to your workflow file:
     claude_access_token: ${{ secrets.CLAUDE_ACCESS_TOKEN }}
     claude_refresh_token: ${{ secrets.CLAUDE_REFRESH_TOKEN }}
     claude_expires_at: ${{ secrets.CLAUDE_EXPIRES_AT }}
+    secrets_admin_pat: ${{ secrets.SECRETS_ADMIN_PAT}}
 
 # Or limiting the conversation turns
 - name: Run Claude Code with limited turns
@@ -48,6 +52,7 @@ Add the following to your workflow file:
     claude_access_token: ${{ secrets.CLAUDE_ACCESS_TOKEN }}
     claude_refresh_token: ${{ secrets.CLAUDE_REFRESH_TOKEN }}
     claude_expires_at: ${{ secrets.CLAUDE_EXPIRES_AT }}
+    secrets_admin_pat: ${{ secrets.SECRETS_ADMIN_PAT}}
 
 # Using custom system prompts
 - name: Run Claude Code with custom system prompt
@@ -56,7 +61,11 @@ Add the following to your workflow file:
     prompt: "Build a REST API"
     system_prompt: "You are a senior backend engineer. Focus on security, performance, and maintainability."
     allowed_tools: "Bash(git:*),View,GlobTool,GrepTool,BatchTool"
-    anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+    use_oauth: "true"
+    claude_access_token: ${{ secrets.CLAUDE_ACCESS_TOKEN }}
+    claude_refresh_token: ${{ secrets.CLAUDE_REFRESH_TOKEN }}
+    claude_expires_at: ${{ secrets.CLAUDE_EXPIRES_AT }}
+    secrets_admin_pat: ${{ secrets.SECRETS_ADMIN_PAT}}
 
 # Or appending to the default system prompt
 - name: Run Claude Code with appended system prompt
@@ -65,7 +74,11 @@ Add the following to your workflow file:
     prompt: "Create a database schema"
     append_system_prompt: "After writing code, be sure to code review yourself."
     allowed_tools: "Bash(git:*),View,GlobTool,GrepTool,BatchTool"
-    anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+    use_oauth: "true"
+    claude_access_token: ${{ secrets.CLAUDE_ACCESS_TOKEN }}
+    claude_refresh_token: ${{ secrets.CLAUDE_REFRESH_TOKEN }}
+    claude_expires_at: ${{ secrets.CLAUDE_EXPIRES_AT }}
+    secrets_admin_pat: ${{ secrets.SECRETS_ADMIN_PAT}}
 
 # Using custom environment variables
 - name: Run Claude Code with custom environment variables
@@ -77,7 +90,11 @@ Add the following to your workflow file:
       API_URL: https://api-staging.example.com
       DEBUG: true
     allowed_tools: "Bash(git:*),View,GlobTool,GrepTool,BatchTool"
-    anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+    use_oauth: "true"
+    claude_access_token: ${{ secrets.CLAUDE_ACCESS_TOKEN }}
+    claude_refresh_token: ${{ secrets.CLAUDE_REFRESH_TOKEN }}
+    claude_expires_at: ${{ secrets.CLAUDE_EXPIRES_AT }}
+    secrets_admin_pat: ${{ secrets.SECRETS_ADMIN_PAT}}
 ```
 
 ## Inputs
@@ -103,6 +120,7 @@ Add the following to your workflow file:
 | `claude_access_token`  | Claude AI OAuth access token (required when use_oauth is true)                                    | No       | ''                           |
 | `claude_refresh_token` | Claude AI OAuth refresh token (required when use_oauth is true)                                   | No       | ''                           |
 | `claude_expires_at`    | Claude AI OAuth token expiration timestamp (required when use_oauth is true)                      | No       | ''                           |
+| `secrets_admin_pat`    | Personal Access Token with secrets:write access to the repository (required for oauth refresh)    | No       | ''                           |
 | `use_node_cache`       | Whether to use Node.js dependency caching (set to true only for Node.js projects with lock files) | No       | 'false'                      |
 
 \*Either `prompt` or `prompt_file` must be provided, but not both.
@@ -131,7 +149,11 @@ Example usage:
     NODE_VERSION: "20.x"
   with:
     prompt: "Your prompt here"
-    anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+    use_oauth: "true"
+    claude_access_token: ${{ secrets.CLAUDE_ACCESS_TOKEN }}
+    claude_refresh_token: ${{ secrets.CLAUDE_REFRESH_TOKEN }}
+    claude_expires_at: ${{ secrets.CLAUDE_EXPIRES_AT }}
+    secrets_admin_pat: ${{ secrets.SECRETS_ADMIN_PAT}}
 ```
 
 ## Custom Environment Variables
@@ -152,7 +174,11 @@ The `claude_env` input accepts YAML multiline format with key-value pairs:
       DEBUG: true
       LOG_LEVEL: debug
     allowed_tools: "Bash(git:*),View,GlobTool,GrepTool,BatchTool"
-    anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+    use_oauth: "true"
+    claude_access_token: ${{ secrets.CLAUDE_ACCESS_TOKEN }}
+    claude_refresh_token: ${{ secrets.CLAUDE_REFRESH_TOKEN }}
+    claude_expires_at: ${{ secrets.CLAUDE_EXPIRES_AT }}
+    secrets_admin_pat: ${{ secrets.SECRETS_ADMIN_PAT}}
 ```
 
 ### Features:
@@ -201,6 +227,7 @@ You can provide a custom MCP configuration file to dynamically load MCP servers:
     claude_access_token: ${{ secrets.CLAUDE_ACCESS_TOKEN }}
     claude_refresh_token: ${{ secrets.CLAUDE_REFRESH_TOKEN }}
     claude_expires_at: ${{ secrets.CLAUDE_EXPIRES_AT }}
+    secrets_admin_pat: ${{ secrets.SECRETS_ADMIN_PAT}}
 ```
 
 The MCP config file should follow this format:
@@ -234,6 +261,7 @@ You can combine MCP config with other inputs like allowed tools:
     claude_access_token: ${{ secrets.CLAUDE_ACCESS_TOKEN }}
     claude_refresh_token: ${{ secrets.CLAUDE_REFRESH_TOKEN }}
     claude_expires_at: ${{ secrets.CLAUDE_EXPIRES_AT }}
+    secrets_admin_pat: ${{ secrets.SECRETS_ADMIN_PAT}}
 ```
 
 ## Example: PR Code Review
@@ -264,6 +292,7 @@ jobs:
           claude_access_token: ${{ secrets.CLAUDE_ACCESS_TOKEN }}
           claude_refresh_token: ${{ secrets.CLAUDE_REFRESH_TOKEN }}
           claude_expires_at: ${{ secrets.CLAUDE_EXPIRES_AT }}
+          secrets_admin_pat: ${{ secrets.SECRETS_ADMIN_PAT}}
 
       - name: Extract and Comment PR Review
         if: steps.code-review.outputs.conclusion == 'success'
@@ -339,6 +368,8 @@ Use provider-specific model names based on your chosen provider:
     claude_access_token: ${{ secrets.CLAUDE_ACCESS_TOKEN }}
     claude_refresh_token: ${{ secrets.CLAUDE_REFRESH_TOKEN }}
     claude_expires_at: ${{ secrets.CLAUDE_EXPIRES_AT }}
+    secrets_admin_pat: ${{ secrets.SECRETS_ADMIN_PAT}}
+
 
 # For Amazon Bedrock (requires OIDC authentication)
 - name: Configure AWS Credentials (OIDC)
@@ -415,7 +446,7 @@ This example shows how to use OIDC authentication with GCP Vertex AI:
 
 ### OAuth Authentication Setup
 
-To use OAuth authentication with your Claude Max Subscription Plan:
+To use OAuth authentication with your Claude Pro / Max Subscription Plan:
 
 0. Login into Claude Code with your Claude Max Subscription with `/login`:
 
@@ -430,12 +461,15 @@ To use OAuth authentication with your Claude Max Subscription Plan:
      - `CLAUDE_REFRESH_TOKEN` - Your Claude AI OAuth refresh token
      - `CLAUDE_EXPIRES_AT` - Token expiration timestamp (Unix timestamp in seconds)
 
+2. Create a Personal Access Token with write:secrets permission on your repo (see [guide](https://github.com/grll/claude-code-login/blob/main/README.md#prerequisites-setting-up-secrets_admin_pat)) and add a secret `SECRETS_ADMIN_PAT`.
+
 2. Reference the secrets in your workflow:
    ```yaml
    use_oauth: "true"
    claude_access_token: ${{ secrets.CLAUDE_ACCESS_TOKEN }}
    claude_refresh_token: ${{ secrets.CLAUDE_REFRESH_TOKEN }}
    claude_expires_at: ${{ secrets.CLAUDE_EXPIRES_AT }}
+   secrets_admin_pat: ${{ secrets.SECRETS_ADMIN_PAT }}
    ```
 
 ### API Key Authentication Setup (Legacy)
