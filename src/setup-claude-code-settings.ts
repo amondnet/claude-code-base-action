@@ -17,13 +17,13 @@ export function getClaudeConfigHomeDir(): string {
 }
 
 export async function setupClaudeCodeSettings() {
-  const configDir = getClaudeConfigHomeDir();
-  const settingsPath = join(configDir, "settings.json");
+  const home = homedir();
+  const settingsPath = `${home}/.claude/settings.json`;
   console.log(`Setting up Claude settings at: ${settingsPath}`);
 
-  // Ensure config directory exists
-  console.log(`Creating config directory...`);
-  await $`mkdir -p ${configDir}`.quiet();
+  // Ensure .claude directory exists
+  console.log(`Creating .claude directory...`);
+  await $`mkdir -p ${home}/.claude`.quiet();
 
   let settings: Record<string, unknown> = {};
   try {
