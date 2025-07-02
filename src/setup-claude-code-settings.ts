@@ -1,20 +1,5 @@
 import { $ } from "bun";
 import { homedir } from "os";
-import { join } from "path";
-
-/**
- * Get Claude's config directory using XDG path when available
- * Priority order:
- * 1. XDG_CONFIG_HOME/claude (XDG Base Directory spec)
- * 2. ~/.claude (legacy fallback)
- */
-export function getClaudeConfigHomeDir(): string {
-  if (process.env.XDG_CONFIG_HOME) {
-    return join(process.env.XDG_CONFIG_HOME, "claude");
-  }
-
-  return join(homedir(), ".claude");
-}
 
 export async function setupClaudeCodeSettings() {
   const home = homedir();

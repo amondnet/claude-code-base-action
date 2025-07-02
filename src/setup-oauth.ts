@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from "fs/promises";
 import { join } from "path";
-import { getClaudeConfigHomeDir } from "./setup-claude-code-settings";
+import { homedir } from "os";
 import { execSync } from "child_process";
 
 const OAUTH_TOKEN_URL = 'https://console.anthropic.com/v1/oauth/token';
@@ -82,7 +82,7 @@ function updateGitHubSecrets(secretsAdminPat: string, accessToken: string, refre
 }
 
 export async function setupOAuthCredentials(credentials: OAuthCredentials) {
-  const claudeDir = getClaudeConfigHomeDir();
+  const claudeDir = join(homedir(), ".claude");
   const credentialsPath = join(claudeDir, ".credentials.json");
 
   // Create the .claude directory if it doesn't exist
