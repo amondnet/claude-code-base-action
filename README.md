@@ -270,6 +270,31 @@ Provide the MCP configuration directly as a JSON string:
     anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
 ```
 
+### Option 2: Inline MCP Configuration
+
+Provide the MCP configuration directly as a JSON string:
+
+```yaml
+- name: Run Claude Code with inline MCP config
+  uses: anthropics/claude-code-base-action@beta
+  with:
+    prompt: "Your prompt here"
+    mcp_config: |
+      {
+        "mcpServers": {
+          "server-name": {
+            "command": "node",
+            "args": ["./server.js"],
+            "env": {
+              "API_KEY": "your-api-key"
+            }
+          }
+        }
+      }
+    allowed_tools: "Bash(git:*),View,GlobTool,GrepTool,BatchTool"
+    anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+```
+
 The MCP config file should follow this format:
 
 ```json
